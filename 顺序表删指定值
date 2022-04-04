@@ -1,0 +1,59 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define MAXSIZE 100
+typedef int ElemType;
+typedef struct
+{
+    ElemType elem[MAXSIZE];
+    int length;
+}SeqList;
+
+SeqList * CreatList();
+void PrintList(SeqList *sq);
+void DeleteX(SeqList *q,ElemType x);
+
+
+main()
+{
+    SeqList *q;
+    ElemType x;
+    q=CreatList();
+    scanf("%d",&x);
+    DeleteX(q,x);
+    PrintList(q);
+}
+
+SeqList * CreatList()
+{
+    SeqList *sq = (SeqList*)malloc(sizeof(SeqList));
+    int i;
+	scanf("%d",&(sq->length));
+    for(i=0;i<sq->length;i++)
+    {
+        scanf("%d",&(sq->elem[i]));
+    }
+    return sq;
+}
+
+void PrintList(SeqList *sq)
+{
+    int i;
+	for(i=0;i<sq->length;i++)
+        printf("%d ",sq->elem[i]);
+}
+
+/* 请在这里填写答案 */
+void DeleteX(SeqList *q,ElemType x)
+{
+	int i,j;     //i为查找大循环计数量，j为成功查找小循环计数量 
+	for(i=0;i<q->length;i++){
+		if(q->elem[i]==x){
+			for(j=i;j<q->length-1;j++){
+				q->elem[j]=q->elem[j+1];
+			}
+			q->length--;
+			i=i-1;
+      //查找并删除了指定元素后，顺序表长度减少，如果有连续的待删元素出现，就会逃脱检查，55行的i=i-1可以解决这个问题
+		}
+	}
+}
