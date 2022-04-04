@@ -1,0 +1,73 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef int DataType;
+typedef struct node
+{
+    DataType data;
+    struct node *next;
+}LNode,*LinkList;
+
+LinkList CreatList(); 
+void PrintList(LinkList head );
+void Reverse( LinkList head );
+
+main()
+{
+    LinkList q;
+    q=CreatList();
+    Reverse(q);
+    PrintList(q);
+}
+
+
+LinkList  CreatList()
+{
+    LinkList h = (LinkList)malloc(sizeof(LNode));
+    LNode *p,*tail= h;
+    int i,n;
+    scanf("%d",&n);
+    for(i=0;i<n;i++)
+    {   
+        p=(LNode*)malloc(sizeof(LNode));
+        scanf("%d",&(p->data));
+        tail->next = p;
+        tail = p;
+    }
+    tail->next=NULL;
+    return h;
+}
+void PrintList(LinkList head )
+{
+     LNode *p = head->next;
+     while (p) 
+     {
+         printf("%d ", p->data);
+         p = p->next;
+     }
+}
+
+
+/* 请在这里填写答案 */
+void Reverse(LinkList head)
+{
+    LNode *p,*temp;
+    //p=(LinkList)malloc(sizeof(LNode));
+    p=head->next;
+    head->next=NULL;
+//     for(temp=p;p!=NULL;p=p->next){
+//         temp=p;
+//         temp->next=head->next;
+//         head->next=temp;
+//     }
+    while(p){
+        temp=p;
+		    p=p->next;
+ /* 注意：本题做错的一个原因在于把64行的p=p->next放到了67行，可能是因为在循环外将temp指向了head->next，
+          在循环内又将temp指向p，二者指的是同一个东西，如果先把temp->next指向head->next，p->next也随之置空了，
+          因此，需要先让p指向p->next，把temp和p区别开，57~61行被注释掉的内容也犯了这个错误*/       
+        temp->next=head->next;
+//      p=p->next;
+        head->next=temp;
+        
+    }
+}
