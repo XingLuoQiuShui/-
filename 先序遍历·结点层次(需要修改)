@@ -1,0 +1,56 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef char DataType;
+
+typedef struct Node
+{
+    DataType data;
+    struct Node * Lchild;
+    struct Node * Rchild;
+}BiTNode,*BiTree;
+
+BiTree CreatBiTree();//用扩展先序遍历序列创建二叉链表
+void PreOrderLayer(BiTree bt, int lay);
+main()
+{
+    BiTree root;
+    root=CreatBiTree();
+    PreOrderLayer(root,1);
+}
+
+BiTree CreatBiTree()//用扩展先序遍历序列创建二叉链表
+{
+    BiTree bt;
+    char ch;
+    ch=getchar();
+    if(ch=='^')
+        return NULL;
+    bt=(BiTree )malloc(sizeof(BiTNode));
+    bt->data=ch;
+    bt->Lchild = CreatBiTree();
+    bt->Rchild = CreatBiTree();
+    return bt;
+}
+
+
+/* 请在这里填写答案 */
+void PreOrderLayer(BiTree bt,int lay)
+{
+	if(bt){
+		printf("(%c,%d)",bt->data,lay);
+		PreOrderLayer(bt->Lchild,++lay);
+		PreOrderLayer(bt->Rchild,lay);
+	}
+  /* 注意41和42行遍历要放在if语句内部，否则不能返回完整结果，原因待究 */
+}
+
+/* 下面是之前写的，作参考 */
+void PreOrderLayer(BiTree bt, int lay)
+{
+	if(bt){
+		printf("(%c,%d)",bt->data,lay); 
+		PreOrderLayer(bt->Lchild,lay+1);
+		PreOrderLayer(bt->Rchild,lay+1);
+    /* 不知怎么，当参数为lay+1的时候，左、右孩子遍历都要进行此处理，而参数为++lay时，就不需要了 */
+	}
+}
