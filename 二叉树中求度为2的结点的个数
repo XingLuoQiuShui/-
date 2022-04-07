@@ -1,0 +1,46 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef char DataType;
+
+typedef struct Node
+{
+    DataType data;
+    struct Node * Lchild;
+    struct Node * Rchild;
+}BiTNode,*BiTree;
+
+BiTree CreatBiTree();//用扩展先序遍历序列创建二叉链表
+int Degree2(BiTree bt);
+
+main()
+{
+    BiTree root;
+    root=CreatBiTree();
+    printf("%d\n",Degree2(root));
+}
+
+BiTree CreatBiTree()//用扩展先序遍历序列创建二叉链表
+{
+    BiTree bt;
+    char ch;
+    ch=getchar();
+    if(ch=='^')
+        return NULL;
+    bt=(BiTree)malloc(sizeof(BiTNode));
+    bt->data=ch;
+    bt->Lchild=CreatBiTree();
+    bt->Rchild=CreatBiTree();
+    return bt;
+}
+
+/* 请在这里填写答案 */
+int Degree2(BiTree bt)
+{
+	int cnt=0;
+	if(bt->Lchild!=NULL&&bt->Rchild!=NULL){
+		cnt++;
+		cnt+=Degree2(bt->Lchild);
+		cnt+=Degree2(bt->Rchild);
+	}
+	return cnt;
+}
