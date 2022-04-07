@@ -1,0 +1,92 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef char DataType;
+typedef struct Node
+{
+    DataType data;
+    struct Node *Lchild;
+    struct Node *Rchild;
+}BiTNode,*BiTree;
+
+BiTree CreatBiTree(); //用扩展先序遍历序列创建二叉链表
+void SwapLR(BiTree bt);
+void PrintTree(BiTree bt,int h); //按树状打印二叉树（课本P168算法6-16
+
+main()
+{
+    BiTree root;
+    root=CreatBiTree();
+    SwapLR(root);
+    PrintTree(root,0);
+}
+
+BiTree CreatBiTree()//用扩展先序遍历序列创建二叉链表
+{
+    BiTree bt;
+    char ch;
+    ch=getchar();
+    if(ch=='^')
+        return NULL;
+    bt=(BiTree)malloc(sizeof(BiTNode));
+    bt->data=ch;
+    bt->Lchild=CreatBiTree();
+    bt->Rchild=CreatBiTree();
+    return bt;
+}
+
+void PrintTree(BiTree bt,int h)
+{
+    if(bt==NULL)
+        return ;
+    PrintTree(bt->Rchild,h+1);
+    int i;
+	for(i=0;i<h;i++)
+        printf("  ");
+    printf("%c\n",bt->data);
+    PrintTree(bt->Lchild,h+1);
+}
+
+/* 请在这里填写答案 */
+void SwapLR(BiTree bt)
+{
+	BiTree temp;
+//	temp=(BiTree)malloc(sizeof(BiTNode));
+	if(bt){
+		temp=bt->Lchild;
+		bt->Lchild=bt->Rchild;
+		bt->Rchild=temp;
+	}
+	if(bt->Lchild){
+		SwapLR(bt->Lchild);
+	}
+	if(bt->Rchild){
+		SwapLR(bt->Rchild);
+	}
+  /* 这回起初测试的时候没有输出，我还以为是53行需要malloc分配内存
+     有些奇怪的是，左右子树递归调用时，需要判断是否不为空，这样就正常了，我没看出来有什么大变化。 */
+}
+
+/* 下面是之前完成的结果，进行了本可简化的分类讨论(左右子树是否为空) */
+void SwapLR(BiTree bt)
+{
+	BiTree Temp;
+	Temp=(BiTree)malloc(sizeof(BiTNode));
+	if(bt){
+		if(bt->Lchild){
+			if(bt->Rchild){
+				Temp=bt->Rchild;
+				bt->Rchild=bt->Lchild;
+				bt->Lchild=Temp;
+			}else{
+				bt->Rchild=bt->Lchild;
+				bt->Lchild=NULL;
+			}
+		}else if(bt->Rchild){
+				bt->Lchild=bt->Rchild;
+				bt->Rchild=NULL;
+		}
+		SwapLR(bt->Lchild);
+		SwapLR(bt->Rchild);
+	}
+    //结尾处不能把Temp给free掉，否则右子树全没了
+}
