@@ -1,0 +1,51 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef char DataType;
+
+typedef struct CSNode
+{
+    DataType data;
+    struct CSNode *FirstChild;
+    struct CSNode *NextSibling;
+}CSNode,*CSTree;
+
+CSTree CreatCSTree(); //以对应二叉树的扩展先序遍历序列创建树
+int NumOfLeaf(CSTree rt);
+
+main()
+{
+    CSTree root;
+    root=CreatCSTree();
+    printf("%d\n",NumOfLeaf(root));
+}
+
+CSTree CreatCSTree()//以对应二叉树的扩展先序遍历序列创建树 
+{
+    CSTree root;
+    char ch;
+    ch=getchar();
+    if(ch=='^')
+        return NULL;
+    root=(CSTree )malloc(sizeof(CSNode));
+    root->data=ch;
+    root->FirstChild = CreatCSTree();
+    root->NextSibling = CreatCSTree();
+    return root;
+}
+
+
+/* 请在这里填写答案 */
+/* 稀里糊涂地做对了，好像是先沿着孩子深入，再由兄弟发散，有点像深度遍历 */
+int NumOfLeaf(CSTree rt)
+{
+	int LeafNum=0;
+	if(rt->FirstChild==NULL){
+		LeafNum++;
+	}else{
+		LeafNum+=NumOfLeaf(rt->FirstChild);
+	}
+	if(rt->NextSibling!=NULL){
+			LeafNum+=NumOfLeaf(rt->NextSibling);
+	}
+	return LeafNum;
+}
